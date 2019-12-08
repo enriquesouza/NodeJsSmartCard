@@ -77,17 +77,19 @@ inquirer
                 if (secret.password === secret.passwordConfirmation) {
                     console.info('Does your password match?', true);
                     myEncryptedWif = encrypt(wif, secret.password + _secret);
-                    console.log(myEncryptedWif);
 
+                    let myQRCode = `smartcash:${address}?card=${myEncryptedWif}`
 
+                    console.log(`My QRCode is: `);
+                    console.log(myQRCode)
 
-                    console.log(`My encrypted key: ${myEncryptedWif}`)
-                    qrCode.generate(myEncryptedWif, {
+                    qrCode.generate(myQRCode, {
                         small: true
                     })
                     console.log(``)
                     console.log(``)
                     fs.writeFileSync("encrypted_wif", myEncryptedWif);
+                    fs.writeFileSync("encrypted_qrcode", myQRCode)
                     console.log(decrypt(myEncryptedWif, secret.password + _secret));
                 }
             })
