@@ -17,4 +17,4 @@ let send = async function sendByPrivateKey(jsonBody) {
     }
 }
 
-modules.export = send;
+module.exports = send;

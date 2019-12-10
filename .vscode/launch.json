@@ -12,6 +12,15 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}/services/secret/index.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "SmartPay Server",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/services/smartpay/index.js"
         }
     ]
 }
