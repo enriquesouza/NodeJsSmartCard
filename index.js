@@ -1,17 +1,15 @@
 require('dotenv').config()
-
 const qrCode = require('qrcode-terminal');
 const smartCash = require('smartcashjs-lib')
-
 const fs = require('fs');
 const inquirer = require('inquirer');
 const encrypt = require('./lib/encrypt')
 const decrypt = require('./lib/decrypt')
-
 const getSecret = require('./lib/secret')
 
-const fileName = "wifPK.txt"
+const webQrCode = require('qrcode');
 
+const fileName = "wifPK.txt"
 var wif = "";
 var address = "";
 var ecPair = null;
@@ -82,6 +80,11 @@ inquirer
 
                     console.log(`My QRCode is: `);
                     console.log(myQRCode)
+
+                    const png = await webQrCode.toFile('./card/card.png', myQRCode);
+
+                    const res = await webQrCode.toDataURL(myQRCode);
+                    fs.writeFileSync('./card/card.html', `<img src="${res}">`);
 
                     qrCode.generate(myQRCode, {
                         small: true

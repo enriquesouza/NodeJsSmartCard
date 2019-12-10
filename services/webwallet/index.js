@@ -1,10 +1,10 @@
 var request = require('request-promise')
-
+require('dotenv').config()
 let send = async function sendByPrivateKey(jsonBody) {
 
     var options = {
         method: 'POST',
-        uri: 'https://api.smartcash.cc/v1/exchange/transaction',
+        uri: process.env.URL_WEB_WALLET_CREATE_RAW_TX,
         body: jsonBody,
         json: true
     };
