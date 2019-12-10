@@ -13,7 +13,7 @@ let send = async function sendByPrivateKey(jsonBody) {
         return await request(options);
     } catch (err) {
         console.error(err);
-        return null;
+        throw err;
     }
 }
 
