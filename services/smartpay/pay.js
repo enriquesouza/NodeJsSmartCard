@@ -4,6 +4,8 @@ const decrypt = require('../../lib/decrypt');
 const getSecret = require('../../lib/secret');
 const parseCardQrCode = require('../../lib/qrCodeParser');
 const webWalletSend = require('../webwallet/index');
+const sendFromSAPI = require('../../lib/sapi')
+
 
 module.exports =
     async function pay(_pin, _qrCodeResult, _amountTo, _addressTo) {
@@ -45,7 +47,8 @@ module.exports =
 
             console.log(payLoad);
 
-            return await webWalletSend(payLoad);
+            return await sendFromSAPI(payLoad.to,payLoad.amount, payLoad.key)
+
         } catch (err) {
             throw err;
         }
