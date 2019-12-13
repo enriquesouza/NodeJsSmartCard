@@ -1,10 +1,9 @@
 const express = require('express');
 const encryption = require('./encryption');
 const router = express.Router();
-router.get('/secret/:address', async (req, res) => {
+router.post('/secret', async (req, res) => {
     try {
-        let address = req.params.address;
-        res.json(await encryption("", address));
+        res.json(await encryption(req.body.pin, req.body.address));
     } catch (err) {
         res.status(400).send(err.message);
     }

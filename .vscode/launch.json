@@ -7,6 +7,15 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Console Generator",
+            "program": "${workspaceFolder}/console/generator/index.js",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Secret Express Server",
             "skipFiles": [
                 "<node_internals>/**"

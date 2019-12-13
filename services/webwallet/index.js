@@ -1,6 +1,8 @@
-var request = require('request-promise')
 require('dotenv').config()
-let send = async function sendByPrivateKey(jsonBody) {
+
+var request = require('request-promise')
+
+module.exports = async (jsonBody) => {
 
     var options = {
         method: 'POST',
@@ -15,6 +17,4 @@ let send = async function sendByPrivateKey(jsonBody) {
         console.error(err);
         throw err;
     }
-}
-
-module.exports = send;
+};
