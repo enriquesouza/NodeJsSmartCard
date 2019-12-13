@@ -9,25 +9,36 @@ cd inside the folder you cloned it
 
 run => npm install
 
-open 2 terminals => 
-    on terminal 1 => cd inside the root folder you cloned the repo then 
-        run => node ./services/secret/
+Start the app running the cmd: 
+node index.js
 
-        This will start the service that creates the secret
+    => This cmd will start both web services
 
-    on terminal 2 => cd inside the root folder you cloned the repo then 
+        The Web Service 1 is to create all secrets
 
-        run => node index.js 
+        The Web Service 2 is SmartPay API. It is responsible to send the payments from your card.
 
+With both services running you are now able to run locally the console that generates and encrypt your card based in your PIN.
+
+This PIN is the same that will be used on SMART PAY APPs;
 
 SMART PAY Server
     This is the API to decrypt the QRCode and broadcast the transaction
 
-    To start go to your root folder and type:
-        node ./services/smartpay/index.js 
-
-
 In order to test the payment you need to Scan your QRCode or use this test one:
+
+    All Card URI are stored on your local folder.
+        > console
+            > generator
+                > generated_cards
+                    > card_0 -- It is just an example, because you can have many cards
+                        > card_0.qrcode -- This is the file that have your CARD.
+
+    You can copy the content of card_0.qrcode and paste on CURL 
+        qrCodeResult: "smartcash: ______ "
+
+    This is the PIN you must type on SmartPay devices;
+        pin: 123456
 
     curl --header "Content-Type: application/json" \
         --request POST \
