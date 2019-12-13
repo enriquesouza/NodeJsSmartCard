@@ -42,5 +42,5 @@ In order to test the payment you need to Scan your QRCode or use this test one:
 
     curl --header "Content-Type: application/json" \
         --request POST \
-        --data '{"pin": "123456","qrCodeResult": "smartcash:SfuQ4fg5ARKaXoKsSD9BnxN4N7DubnqMEp?card=2a8771425c214abc53f82efc54c7c9e0c2f0926105777012193bd73b6e7ede81bcf61372888112e2bdb18c3a5f9b54ebc79209a6a65305255c5c829f9fc4248d","amountTo": 0.002,"addressTo": "SgPMhNeG16Ty6VaPSnAtxNJAQ2JRnhTGaQ"}' \
+        --data '{"pin": "123456","qrCodeResult": "smartcash:SfuQ4fg5ARKaXoKsSD9BnxN4N7DubnqMEp?card=bf20a031a0eaf0b66e76a194a6e3d63745af15a9c74cffc2de9ff73b0f5f2cbb2c61ba0872ac3eab2ef828b2748b5f51f86706ff837e1bdf25e0e7491a778fe9","amountTo": 0.002,"addressTo": "SgPMhNeG16Ty6VaPSnAtxNJAQ2JRnhTGaQ"}' \
         http://localhost:8089/pay
