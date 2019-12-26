@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Instascan</title>
+  <script type="text/javascript" src="instascan.min.js"></script>
+  <style>
+    html, body {margin: 0;padding: 0;}
+  </style>
+</head>
+
+<body>
+  <div id="noCamerasFound" style="display: none; font-size: 20px; font-family: fantasy; color: red; text-align: center;">No Cameras Found!</div>
+  <video id="preview" style="width: 100%; height: 100%"></video>
+  <script type="text/javascript">
+    function getDefaultCamera(cameras) {
+
+      if (cameras.length == 1) {
+        return cameras[0];
+      } else {
+        for (var i = 0; i < cameras.length; i++) {
+          try {
+            var cameraName = cameras[i].name.toLowerCase();
+            if (cameraName.includes("back") || cameraName.includes("rear")) {
+              scanner.mirror = false;
+              return cameras[i];
+            }
+          } catch (e) {
+            if (cameras.length == 2) {
+              scanner.mirror = false;
+              return cameras[1];
+            }
+          }
+        }
+      }
+
+      return cameras[0];
+    }
+
+    function getQrCode(content) {
+      var qrCode = content;
+
+      if (qrCode.includes(":")) {
+        qrCode = qrCode.substring(qrCode.indexOf(":") + 1);
+      }
+
+      if (qrCode.includes("?")) {
+        qrCode = qrCode.substring(0, qrCode.indexOf("?"));
+      }
+
+      return qrCode;
+    }
+
+    function getAmount(content) {
+      var amount = content;
+
+      if (amount.includes("amount=")) {
+        var i1 = amount.indexOf("amount=") + 7;
+        var i2 = amount.indexOf("&", i1);
+        if (i2 == -1) {
+          i2 = amount.length - 1;
+        }
+        amount = amount.substring(i1, i2);
+      } else {
+        amount = "";
+      }
+
+      return amount;
+    }
+
+    let scanner = new Instascan.Scanner({
+      video: document.getElementById('preview')
+    });
+    scanner.addListener('scan', function (content) {
+      console.log(content);
+      window.parent.$('#modalQrCode').modal('hide');
+      window.parent.$("#iQR").attr("src", "");
+
+      let winLocation = document.location.href;
+      let qrFieldId = winLocation.substring(winLocation.indexOf("?") + 1);
+      let qrCode = getQrCode(content);
+      let amount = getAmount(content);
+
+      window.parent.$("#" + qrFieldId).val(qrCode);
+      window.parent.$("#" + qrFieldId).trigger('input'); // Use for Chrome/Firefox/Edge
+      window.parent.$("#" + qrFieldId).trigger('change'); // Use for Chrome/Firefox/Edge + IE11
+
+      if (amount && amount !== "") {
+        window.parent.$("#amount").val(amount);
+        window.parent.$("#amount").trigger('input');
+        window.parent.$("#amount").trigger('change');
+      }
+    });
+
+    Instascan.Camera.getCameras().then(function (cameras) {
+      if (cameras.length > 0) {
+        scanner.start(getDefaultCamera(cameras));
+      } else {
+        document.getElementById("noCamerasFound").style.display = 'block';
+        console.error('No cameras found.');
+      }
+    }).catch(function (e) {
+      console.error(e);
+    });
+  </script>
+</body>
+
+</html>

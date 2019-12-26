@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="/lib/qrCodeParserHtml.js" type="text/javascript"></script>
+  <title>SmartPay</title>
+</head>
+
+<body onload="load()">
+  <div class="container">
+    <br />
+
+    <div class="card">
+      <h5 class="card-header">Check your order details</h5>
+      <div class="card-body">
+
+
+        <form>
+          <div class="form-group row">
+            <label for="txtMerchant" class="col-sm-2 col-form-label"> Merchant:</label>
+            <div class="col-sm-10">
+              <input type="text" id="txtMerchant" class="form-control form-control-lg form-control-plaintext"
+                name="txtMerchant" aria-describedby="addressHelp" placeholder="Merchant" />
+              <small class="form-text text-muted">This is the name of the merchant web store.</small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="txtMerchantAddress" class="col-sm-2 col-form-label"> Merchant Address:</label>
+            <div class="col-sm-10">
+              <input type="text" id="txtMerchantAddress" class="form-control form-control-lg form-control-plaintext"
+                name="txtMerchantAddress" aria-describedby="addressHelp" placeholder="Merchant Address" />
+              <small class="form-text text-muted">This is the address you will send to pay the merchant.</small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="txtOrderId" class="col-sm-2 col-form-label"> OrderId:</label>
+            <div class="col-sm-10">
+              <input type="text" id="txtOrderId" class="form-control form-control-lg form-control-plaintext"
+                name="txtOrderId" aria-describedby="addressHelp" placeholder="OrderId" />
+              <small class="form-text text-muted">This is the order id from the merchant store.</small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="txtOrderAmount" class="col-sm-2 col-form-label"> Amount:</label>
+            <div class="col-sm-10">
+              <input type="text" id="txtOrderAmount" name="txtOrderAmount" class="form-control form-control-plaintext"
+                placeholder="Amount" />
+              <small class="form-text text-muted">This is the amount in SMART the merchant is charging you.</small>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <br />
+
+    <div class="card">
+      <h5 class="card-header">Scan your card</h5>
+      <div class="card-body">
+
+        <form>
+          <div class="form-group row">
+            <label for="txtCardAddress" class="col-sm-2 col-form-label"> Address:</label>
+            <div class="col-sm-10">
+              <input type="text" id="txtCardAddress" class="form-control form-control-lg form-control-plaintext"
+                name="txtCardAddress" aria-describedby="addressHelp" placeholder="Address" readonly />
+              <small id="addressHelp" class="form-text text-muted">This is the public address of your card.</small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="txtCryptCard" class="col-sm-2 col-form-label"> Encrypted Card:</label>
+            <div class="col-sm-10">
+              <input type="text" id="txtCryptCard" name="txtCryptCard" class="form-control form-control-plaintext"
+                placeholder="Encrypted Card" readonly />
+              <small id="addressHelp" class="form-text text-muted">Never share any info with anyone else.</small>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="card" class="col-sm-2 col-form-label"> Card:</label>
+            <div class="col-sm-8">
+              <textarea class="form-control" id="card" name="card" class="form-control form-control-plaintext"
+                placeholder="Card" onchange="qrParser()" readonly></textarea>
+            </div>
+            <button type="button" class="btn btn-primary col-sm-2 " data-toggle="modal" data-target="#cardModal"
+              onclick="startQR('txtCardAddress')">
+              Scan your Card
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <br />
+
+    <div class="card text-center">
+      <div class="card-header">
+        Payment
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Finish your payment</h5>
+        <p class="card-text">This is the last step before you confirm your order.</p>
+        <button type="button" class="btn btn-warning col-sm-12" onclick="openPinModal()">
+          Pay
+        </button>
+        <input type="hidden" id="pin" />
+        <br />
+        <br />
+        <div class="alert alert-danger" role="alert" style="display: none;" id="alertErrorCard"></div>
+
+      </div>
+      <div class="card-footer text-muted">
+        TransactionId: <span id="txtTransactionId"></span>
+      </div>
+    </div>
+
+    <br />
+
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="cardModal" tabindex="-1" role="dialog" aria-labelledby="cardModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cardModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <iframe scrolling="no" id="iQR" src="" class="iframeQR"></iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="pinModal" tabindex="-1" role="dialog" aria-labelledby="pinModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Type your PIN:</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button id="pin_0" type="button" class="btn btn-secondary">0</button>
+            <button id="pin_1" type="button" class="btn btn-secondary">1</button>
+            <button id="pin_2" type="button" class="btn btn-secondary">2</button>
+            <button id="pin_3" type="button" class="btn btn-secondary">3</button>
+            <button id="pin_4" type="button" class="btn btn-secondary">4</button>
+            <button id="pin_5" type="button" class="btn btn-secondary">5</button>
+            <button id="pin_6" type="button" class="btn btn-secondary">6</button>
+            <button id="pin_7" type="button" class="btn btn-secondary">7</button>
+            <button id="pin_8" type="button" class="btn btn-secondary">8</button>
+            <button id="pin_9" type="button" class="btn btn-secondary">9</button>
+            <button id="pin_reset" type="button" class="btn btn-info" onclick="cancelPin()">Reset</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="alert alert-light" role="alert" style="float: left;" id="alertPIN"></div>
+          <div class="alert alert-danger" role="alert" style="float: left; display: none;" id="alertErrorPin"></div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="cancelPin()"
+            id="btnCancelPayment">Cancel</button>
+          <button type="button" class="btn btn-warning" onclick="pay()" id="btnPayModal">
+            Pay
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+
+  <script type="text/javascript">
+
+    function loadingOn() {
+      $("#btnPayModal").addClass("spinner-border").addClass("text-warning");
+      $("#btnPayModal").prop("disabled", true);
+      $("#btnCancelPayment").hide();
+    }
+
+    function loadingOff() {
+      $("#btnCancelPayment").show();
+      $("#btnPayModal").show();
+      $("#btnPayModal").removeClass("spinner-border").removeClass("text-warning");
+      $("#btnPayModal").prop("disabled", false);
+    }
+
+    function cancelPin() {
+      $(`#pin`).val('');
+      $(`#alertPIN`).text('');
+
+      $('#alertErrorPin').hide();
+      $('#alertErrorPin').text('');
+    }
+
+    function getRandomOrder() {
+      cancelPin();
+      let as = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      let s = as.sort((a, b) => 0.5 - Math.random());
+      for (let i = 0; i < 10; i++) {
+        $(`#pin_${i}`).text(s[i]);
+        $(`#pin_${i}`).val(s[i]);
+        $(`#pin_${i}`).unbind('click').click(function () {
+          let currentPin = $(`#pin`).val();
+          currentPin += $(`#pin_${i}`).val()
+          $(`#pin`).val(currentPin);
+          $(`#alertPIN`).text(currentPin);
+        });
+      }
+      return s;
+    }
+
+    function openPinModal() {
+
+      if (!paymentValidation()) return;
+
+      $('#alertErrorCard').hide()
+      $('#alertErrorCard').text("");
+
+      getRandomOrder();
+
+      $('#pinModal').modal('toggle');
+      $('#pinModal').modal('show');
+
+    }
+
+    function paymentValidation() {
+
+      if ($('#txtCryptCard').val().length === 0) {
+        $('#alertErrorCard').show()
+        $('#alertErrorCard').text("You must scan your card before you can proceed.");
+        return false;
+      }
+      return true;
+    }
+
+    function pay() {
+
+      let payload = {
+        pin: $(`#pin`).val(),
+        qrCodeResult: $('#card').val(),
+        amountTo: parseFloat($('#txtOrderAmount').val()),
+        addressTo: $('#txtMerchantAddress').val()
+      };
+
+      $.ajax({
+        type: 'POST',
+        url: "https://localhost:8889/pay",
+        data: JSON.stringify(payload),
+        beforeSend: function () {
+          loadingOn();
+        },
+        error: function (e) {
+          loadingOff();
+
+          if (e !== undefined && e !== null) {
+
+            //error: 06065064: digital envelope routines: EVP_DecryptFinal_ex: bad decrypt
+            if (e.status === 400) {
+              console.log(e.responseText)
+              if (e.responseText.indexOf('bad decrypt') > -1) {
+
+                $('#alertErrorPin').show();
+                $('#alertErrorPin').text('Wrong password, please reset your PIN and try again!');
+
+              }
+            }
+
+          }
+
+          console.log(`error => `)
+          console.log(e);
+        },
+        success: function (data) {
+          console.log(data);
+          afterSuccessPayment(data);
+          return data;
+        },
+        complete: function () {
+          loadingOff();
+        },
+        dataType: "json",
+        contentType: "application/json"
+      });
+    }
+
+    function afterSuccessPayment(data) {
+
+      if (data !== undefined && data !== null) {
+
+
+        let sapiUrl = `<a href='https://sapi2.smartcash.org/v1/transaction/check/${data.txid}' target='_blank'> SAPI </a>`
+
+        let expUrl = `<a href='https://explorer.smartcash.cc/tx/${data.txid}' target='_blank'> Explorer </a>`
+
+        $(`#aSapi`).attr('href', sapiUrl)
+        $(`#aExplorer`).attr('href', expUrl)
+
+        $(`#txtTransactionId`).html(data.txid + ' ' + sapiUrl + ' ' + expUrl);
+
+        $('#pinModal').modal('hide');
+
+      }
+      loadingOff();
+
+    }
+
+    function load() {
+
+      let orderId = getQueryVariable("orderid");
+      let amount = getQueryVariable("amount");
+      let merchant = getQueryVariable("merchant_name");
+      let merchant_address = getQueryVariable("merchant_address");
+      let callBackFunction = getQueryVariable("callback");
+
+      document.getElementById('txtOrderId').value = orderId;
+      document.getElementById('txtOrderAmount').value = amount;
+      document.getElementById('txtMerchant').value = merchant;
+      document.getElementById('txtMerchantAddress').value = merchant_address;
+    };
+
+    function getQueryVariable(variable) {
+      var query = window.location.search.substring(1);
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+          return decodeURIComponent(pair[1]);
+        }
+      }
+      console.log('Query variable %s not found', variable);
+    }
+
+    function qrParser() {
+      let qrCodeResult = $('#card').val();
+      let parsedQrCode = parseCardQrCode(qrCodeResult);
+      $('#txtCardAddress').val(parsedQrCode.address);
+      $('#txtCryptCard').val(parsedQrCode.card);
+    }
+
+    function startQR(field) {
+      $("#iQR").attr("src", "qr/qrcode/index.html?" + field);
+    }
+
+    function stopQR() {
+      $("#iQR").attr("src", "");
+    }
+
+  </script>
+
+</body>
+
+</html>

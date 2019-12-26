@@ -43,4 +43,11 @@ In order to test the payment you need to Scan your QRCode or use this test one:
     curl --header "Content-Type: application/json" \
         --request POST \
         --data '{"pin": "123456","qrCodeResult": "smartcash:SfuQ4fg5ARKaXoKsSD9BnxN4N7DubnqMEp?card=bf20a031a0eaf0b66e76a194a6e3d63745af15a9c74cffc2de9ff73b0f5f2cbb2c61ba0872ac3eab2ef828b2748b5f51f86706ff837e1bdf25e0e7491a778fe9","amountTo": 0.002,"addressTo": "SgPMhNeG16Ty6VaPSnAtxNJAQ2JRnhTGaQ"}' \
-        http://localhost:8089/pay
+        http://64.34.219.31/pay
+
+
+
+openssl req -x509 -out localhost.crt -keyout localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")

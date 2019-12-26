@@ -1,4 +1,4 @@
     curl --header "Content-Type: application/json" \
         --request POST \
         --data '{"pin": "123456","qrCodeResult": "smartcash:SfuQ4fg5ARKaXoKsSD9BnxN4N7DubnqMEp?card=361a39fa25bec4e813771fe7c592697a41c6211f24cfd874000d92683ad7570ebb4ad1c8f878e7ec19e98a564af6649e8c95d66ccae6a8614a28c6f6f4763bdf","amountTo": 0.002,"addressTo": "SgPMhNeG16Ty6VaPSnAtxNJAQ2JRnhTGaQ"}' \
-        http://localhost:8089/pay
+        https://localhost:8889/pay

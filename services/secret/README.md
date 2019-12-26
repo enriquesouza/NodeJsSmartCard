@@ -13,6 +13,13 @@ Express service:
     exported in the shell console
 
     The default path should be:
-        http://localhost:PORT/secret/ADDRESS
+        http://localhost:PORT/secret
 
     We don't have access to your private KEY!
+
+
+
+    curl --header "Content-Type: application/json" \
+        --request POST \
+        --data '{"pin": "123456", "address":"SgPMhNeG16Ty6VaPSnAtxNJAQ2JRnhTGaQ"}' \
+        http://64.34.219.31:8080/secret
