@@ -105,3 +105,6 @@ dist
 
 # OSX Gerenated file
 .DS_STORE
+
+# WebStorm
+.idea

@@ -2,7 +2,7 @@ const _ = require('lodash');
 const decrypt = require('../../lib/decrypt');
 const getSecret = require('../../lib/secret');
 const parseCardQrCode = require('../../lib/qrCodeParser');
-const sendFromSAPI = require('../../lib/sapi')
+const sendFromSAPI = require('../../lib/sapi');
 
 module.exports =
     async function pay(_pin, _qrCodeCardResult, _amountTo, _addressTo) {
