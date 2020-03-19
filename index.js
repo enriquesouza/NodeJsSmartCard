@@ -28,7 +28,7 @@ async function startSmartPayService() {
 }
 
 async function startCardService() {
-    console.log("Starting Secret Generator Service... http://localhost:8090 & https://localhost:8890");
+    console.log("Starting Card Generator Service... http://localhost:8090 & https://localhost:8890");
     console.log(__dirname);
     const {
         stdout,
